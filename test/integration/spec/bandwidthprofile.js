@@ -273,16 +273,16 @@ describe('BandwidthProfileOptions', function() {
 
   describe('renderHints', () => {
     [
-      // {
-      //   testCase: 'when clientTrackSwitchOffControl=manual',
-      //   bandwidthProfile: {
-      //     video: {
-      //       clientTrackSwitchOffControl: 'manual'
-      //     }
-      //   },
-      //   effectiveclientTrackSwitchOffControl: 'manual',
-      //   effectiveContentPreferencesMode: 'auto',
-      // },
+      {
+        testCase: 'when clientTrackSwitchOffControl=manual',
+        bandwidthProfile: {
+          video: {
+            clientTrackSwitchOffControl: 'manual'
+          }
+        },
+        effectiveclientTrackSwitchOffControl: 'manual',
+        effectiveContentPreferencesMode: 'auto',
+      },
       {
         testCase: 'when clientTrackSwitchOffControl=auto',
         bandwidthProfile: {
@@ -293,56 +293,56 @@ describe('BandwidthProfileOptions', function() {
         effectiveclientTrackSwitchOffControl: 'auto',
         effectiveContentPreferencesMode: 'auto',
       },
-      // {
-      //   testCase: 'when clientTrackSwitchOffControl=unspecified',
-      //   bandwidthProfile: {
-      //     video: {
-      //     }
-      //   },
-      //   effectiveclientTrackSwitchOffControl: 'auto',
-      //   effectiveContentPreferencesMode: 'auto',
-      // },
-      // {
-      //   testCase: 'when clientTrackSwitchOffControl=unspecified, maxTracks=5',
-      //   bandwidthProfile: {
-      //     video: {
-      //       maxTracks: 5,
-      //     }
-      //   },
-      //   effectiveclientTrackSwitchOffControl: 'disabled', // when maxTracks is specified, effectiveclientTrackSwitchOffControl should be disabled.
-      //   effectiveContentPreferencesMode: 'auto',
-      // },
-      // {
-      //   testCase: 'when contentPreferencesMode=manual',
-      //   bandwidthProfile: {
-      //     video: {
-      //       contentPreferencesMode: 'manual'
-      //     }
-      //   },
-      //   effectiveclientTrackSwitchOffControl: 'auto',
-      //   effectiveContentPreferencesMode: 'manual',
-      // },
-      // {
-      //   testCase: 'when contentPreferencesMode=unspecified',
-      //   bandwidthProfile: {
-      //     video: {
-      //     }
-      //   },
-      //   effectiveclientTrackSwitchOffControl: 'auto',
-      //   effectiveContentPreferencesMode: 'auto',
-      // },
-      // {
-      //   testCase: 'contentPreferencesMode=unspecified, renderDimensions=specified',
-      //   bandwidthProfile: {
-      //     video: {
-      //       renderDimensions: {
-      //         low: { width: 100, height: 100 }
-      //       }
-      //     }
-      //   },
-      //   effectiveclientTrackSwitchOffControl: 'auto',
-      //   effectiveContentPreferencesMode: 'disabled',
-      // }
+      {
+        testCase: 'when clientTrackSwitchOffControl=unspecified',
+        bandwidthProfile: {
+          video: {
+          }
+        },
+        effectiveclientTrackSwitchOffControl: 'auto',
+        effectiveContentPreferencesMode: 'auto',
+      },
+      {
+        testCase: 'when clientTrackSwitchOffControl=unspecified, maxTracks=5',
+        bandwidthProfile: {
+          video: {
+            maxTracks: 5,
+          }
+        },
+        effectiveclientTrackSwitchOffControl: 'disabled', // when maxTracks is specified, effectiveclientTrackSwitchOffControl should be disabled.
+        effectiveContentPreferencesMode: 'auto',
+      },
+      {
+        testCase: 'when contentPreferencesMode=manual',
+        bandwidthProfile: {
+          video: {
+            contentPreferencesMode: 'manual'
+          }
+        },
+        effectiveclientTrackSwitchOffControl: 'auto',
+        effectiveContentPreferencesMode: 'manual',
+      },
+      {
+        testCase: 'when contentPreferencesMode=unspecified',
+        bandwidthProfile: {
+          video: {
+          }
+        },
+        effectiveclientTrackSwitchOffControl: 'auto',
+        effectiveContentPreferencesMode: 'auto',
+      },
+      {
+        testCase: 'contentPreferencesMode=unspecified, renderDimensions=specified',
+        bandwidthProfile: {
+          video: {
+            renderDimensions: {
+              low: { width: 100, height: 100 }
+            }
+          }
+        },
+        effectiveclientTrackSwitchOffControl: 'auto',
+        effectiveContentPreferencesMode: 'disabled',
+      }
     ].forEach(({ testCase, bandwidthProfile, effectiveclientTrackSwitchOffControl,  effectiveContentPreferencesMode }) => {
       let aliceRoom;
       let bobRoom;
@@ -351,7 +351,7 @@ describe('BandwidthProfileOptions', function() {
       let aliceRemoteTrack;
       let videoElement1;
       let videoElement2;
-      context.only(testCase, () => {
+      context(testCase, () => {
         before(async () => {
           const aliceLocalVideo = await waitFor(createLocalVideoTrack(), 'alice local video track');
           const aliceOptions = { tracks: [aliceLocalVideo] };
@@ -362,7 +362,7 @@ describe('BandwidthProfileOptions', function() {
           };
 
           const bobLogger = Logger.getLogger('BobLogger');
-          bobLogger.setLevel('info');
+          bobLogger.setLevel('debug');
 
           ({ roomSid, aliceRemote, aliceRoom, bobRoom } = await setupAliceAndBob({ aliceOptions,  bobOptions }));
 
@@ -425,37 +425,37 @@ describe('BandwidthProfileOptions', function() {
             await assertMediaFlow(bobRoom, false, `was not expecting media flow: ${roomSid}`);
           });
 
-          // it('Track turns on when a video element is attached', async () => {
-          //   videoElement1 = aliceRemoteTrack.attach();
-          //   document.body.appendChild(videoElement1);
-          //   await waitFor(trackSwitchedOn(aliceRemoteTrack), `Alice's Track [${aliceRemoteTrack.sid}] to switch on: ${roomSid}`);
-          //   assert.strictEqual(aliceRemoteTrack.isSwitchedOff, false, `Alice's Track.isSwitchedOff = ${aliceRemoteTrack.isSwitchedOff}`);
-          //   await assertMediaFlow(bobRoom, true, `was expecting media flow: ${roomSid}`);
-          // });
+          it('Track turns on when a video element is attached', async () => {
+            videoElement1 = aliceRemoteTrack.attach();
+            document.body.appendChild(videoElement1);
+            await waitFor(trackSwitchedOn(aliceRemoteTrack), `Alice's Track [${aliceRemoteTrack.sid}] to switch on: ${roomSid}`);
+            assert.strictEqual(aliceRemoteTrack.isSwitchedOff, false, `Alice's Track.isSwitchedOff = ${aliceRemoteTrack.isSwitchedOff}`);
+            await assertMediaFlow(bobRoom, true, `was expecting media flow: ${roomSid}`);
+          });
 
-          // it('Track stays on when another video element is attached', async () => {
-          //   videoElement2 = aliceRemoteTrack.attach();
-          //   document.body.appendChild(videoElement2);
-          //   await waitFor(trackSwitchedOn(aliceRemoteTrack), `Alice's Track [${aliceRemoteTrack.sid}] to switch on: ${roomSid}`);
-          //   assert.strictEqual(aliceRemoteTrack.isSwitchedOff, false, `Alice's Track.isSwitchedOff = ${aliceRemoteTrack.isSwitchedOff}`);
-          //   await assertMediaFlow(bobRoom, true, `was expecting media flow: ${roomSid}`);
-          // });
+          it('Track stays on when another video element is attached', async () => {
+            videoElement2 = aliceRemoteTrack.attach();
+            document.body.appendChild(videoElement2);
+            await waitFor(trackSwitchedOn(aliceRemoteTrack), `Alice's Track [${aliceRemoteTrack.sid}] to switch on: ${roomSid}`);
+            assert.strictEqual(aliceRemoteTrack.isSwitchedOff, false, `Alice's Track.isSwitchedOff = ${aliceRemoteTrack.isSwitchedOff}`);
+            await assertMediaFlow(bobRoom, true, `was expecting media flow: ${roomSid}`);
+          });
 
-          // it('tracks stays on when one of the video element is detached ', async () => {
-          //   aliceRemoteTrack.detach(videoElement2);
-          //   videoElement2.remove();
-          //   await waitFor(trackSwitchedOn(aliceRemoteTrack), `Alice's Track [${aliceRemoteTrack.sid}] to switch on: ${roomSid}`);
-          //   assert.strictEqual(aliceRemoteTrack.isSwitchedOff, false, `Alice's Track.isSwitchedOff = ${aliceRemoteTrack.isSwitchedOff}`);
-          //   await assertMediaFlow(bobRoom, true, `was expecting media flow: ${roomSid}`);
-          // });
+          it('tracks stays on when one of the video element is detached ', async () => {
+            aliceRemoteTrack.detach(videoElement2);
+            videoElement2.remove();
+            await waitFor(trackSwitchedOn(aliceRemoteTrack), `Alice's Track [${aliceRemoteTrack.sid}] to switch on: ${roomSid}`);
+            assert.strictEqual(aliceRemoteTrack.isSwitchedOff, false, `Alice's Track.isSwitchedOff = ${aliceRemoteTrack.isSwitchedOff}`);
+            await assertMediaFlow(bobRoom, true, `was expecting media flow: ${roomSid}`);
+          });
 
-          // it('tracks turns off when all video elements are detached ', async () => {
-          //   const elements = aliceRemoteTrack.detach();
-          //   elements.forEach(el => el.remove());
-          //   await waitFor(trackSwitchedOff(aliceRemoteTrack), `Alice's Track [${aliceRemoteTrack.sid}] to switch off: ${roomSid}`);
-          //   assert.strictEqual(aliceRemoteTrack.isSwitchedOff, true, `Alice's Track.isSwitchedOff = ${aliceRemoteTrack.isSwitchedOff}`);
-          //   await assertMediaFlow(bobRoom, false, `was not expecting media flow: ${roomSid}`);
-          // });
+          it('tracks turns off when all video elements are detached ', async () => {
+            const elements = aliceRemoteTrack.detach();
+            elements.forEach(el => el.remove());
+            await waitFor(trackSwitchedOff(aliceRemoteTrack), `Alice's Track [${aliceRemoteTrack.sid}] to switch off: ${roomSid}`);
+            assert.strictEqual(aliceRemoteTrack.isSwitchedOff, true, `Alice's Track.isSwitchedOff = ${aliceRemoteTrack.isSwitchedOff}`);
+            await assertMediaFlow(bobRoom, false, `was not expecting media flow: ${roomSid}`);
+          });
         } else {
           it('Track turns on even if video element is not attached initially', async () => {
             // since no video elements are attached. Tracks should switch off initially
